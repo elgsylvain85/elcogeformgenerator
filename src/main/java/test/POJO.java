@@ -3,11 +3,15 @@ package test;
 import java.util.Date;
 import java.util.List;
 
+import cd.gcd.formgenerator.annotation.DisableField;
+import cd.gcd.formgenerator.annotation.IgnoreField;
+
 //import lombok.Data;
 
 //@Data
 public class POJO {
 
+	@DisableField
 	public Integer id;
 	public String name;
 	public String adress;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cd.gcd.formgenerator.FormGenerator;
-import cd.gcd.utilitiesresources.css.Css;
+import cd.gcd.formgenerator.css.Css;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,9 +22,8 @@ public class RunTest1 extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		Field[] toignore = new Field[] { POJO.class.getDeclaredField("id") };
 
-		FormGenerator form = new FormGenerator(POJO.class, "", toignore, true, true, true);
+		FormGenerator form = new FormGenerator(POJO.class, "", true, true, true);
 
 		((ComboBox<Integer>) form.getControl("phones", ComboBox.class)).getItems().addAll(81, 89, 99, 85);
 

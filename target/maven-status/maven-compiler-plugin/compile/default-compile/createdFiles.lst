@@ -1,9 +1,0 @@
-cd/gcd/formgenerator/annotation/DateTime.class
-test/POJO.class
-cd/gcd/formgenerator/annotation/AreaTextField.class
-test/POJOEnum.class
-cd/gcd/formgenerator/FormGenerator.class
-cd/gcd/formgenerator/annotation/DisableField.class
-cd/gcd/formgenerator/annotation/IgnoreField.class
-test/RunTest1.class
-cd/gcd/formgenerator/UtilityFormGenerator.class

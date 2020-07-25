@@ -1,14 +1,6 @@
 package cd.gcd.formgenerator;
 
-import cd.gcd.formgenerator.annotation.AreaTextField;
-import cd.gcd.formgenerator.annotation.DateTime;
-import cd.gcd.formgenerator.annotation.DisableField;
-import cd.gcd.formgenerator.annotation.IgnoreField;
-import cd.gcd.utilitiesresources.icons.Icon;
-import cd.gcd.utilitiesresources.utilities.GCDUtility;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -18,11 +10,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.controlsfx.control.table.TableFilter;
+
+import cd.gcd.formgenerator.annotation.AreaTextField;
+import cd.gcd.formgenerator.annotation.DateTime;
+import cd.gcd.formgenerator.annotation.DisableField;
+import cd.gcd.formgenerator.annotation.IgnoreField;
+import cd.gcd.formgenerator.icons.Icon;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -41,23 +42,18 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-import javafx.stage.FileChooser.ExtensionFilter;
 import jfxtras.labs.scene.control.BigDecimalField;
 import jfxtras.scene.control.LocalDateTimeTextField;
-import org.controlsfx.control.table.TableFilter;
 
 public class FormGenerator extends SplitPane {
    private Map<String, Object> controls;
-   private List<Field> fieldsToIgnore;
+//   private List<Field> fieldsToIgnore;
    private Map<Object, Field> fieldlinked;
    private BorderPane formPane;
    private GridPane inputformPane;
@@ -76,7 +72,7 @@ public class FormGenerator extends SplitPane {
    public static final String CURRENTPAGE_LABEL = "CURRENTPAGE_LABEL";
    public static final String TOTALPAGE_LABEL = "TOTALPAGE_LABEL";
 
-   public FormGenerator(Class<?> classe, String iconpath, Field[] fieldsToIgnore, boolean generevalidbutton, boolean generetableview, boolean generateform) {
+   public FormGenerator(Class<?> classe, String iconpath, boolean generevalidbutton, boolean generetableview, boolean generateform) {
       this.setOrientation(Orientation.HORIZONTAL);
       this.controls = new HashMap();
       this.fieldlinked = new HashMap();
@@ -91,7 +87,7 @@ public class FormGenerator extends SplitPane {
       MenuItem allMI = new MenuItem("all records", new ImageView(Icon.ALL.url()));
       MenuItem findMI = new MenuItem("find", new ImageView(Icon.SEARCH.url()));
       MenuItem refreshMI = new MenuItem("refresh", new ImageView(Icon.REFRESH.url()));
-      MenuItem ascvsItem = new MenuItem("export to csv", new ImageView(Icon.REPORT.url()));
+//      MenuItem ascvsItem = new MenuItem("export to csv", new ImageView(Icon.REPORT.url()));
       this.controls.put("NEXT_IM_DATAS" + MenuItem.class.getName(), nextMI);
       this.controls.put("PREVIOUS_IM_DATAS" + MenuItem.class.getName(), prevMI);
       this.controls.put("ALL_IM_DATAS" + MenuItem.class.getName(), allMI);
@@ -104,7 +100,7 @@ public class FormGenerator extends SplitPane {
       this.inputformPane.setPadding(new Insets(10.0D));
       this.buttonPane.setHgap(10.0D);
       this.buttonPane.setPadding(new Insets(10.0D));
-      this.fieldsToIgnore = GCDUtility.arrayToList(fieldsToIgnore);
+//      this.fieldsToIgnore = Arrays.asList(fieldsToIgnore);
       int c = 0;
       int r = 0;
       if (iconpath != null) {
@@ -118,7 +114,7 @@ public class FormGenerator extends SplitPane {
          }
       }
 
-      this.title = new Label(GCDUtility.formatToLabel(classe.getSimpleName()));
+      this.title = new Label(UtilityFormGenerator.formatToLabel(classe.getSimpleName()));
       this.title.getStyleClass().add("title");
       this.inputformPane.add(this.title, c + 1, r);
       GridPane.setValignment(this.title, VPos.TOP);
@@ -139,10 +135,10 @@ public class FormGenerator extends SplitPane {
 
          for(int var21 = 0; var21 < var20; ++var21) {
             Field field = var19[var21];
-            if ((this.fieldsToIgnore == null || !this.fieldsToIgnore.contains(field)) && field.getAnnotation(IgnoreField.class) == null) {
+            if (field.getAnnotation(IgnoreField.class) == null) {
                Class<?> fieldtype = field.getType();
                Control control = null;
-               Label label = new Label(GCDUtility.formatToLabel(field.getName()));
+               Label label = new Label(UtilityFormGenerator.formatToLabel(field.getName()));
                this.controls.put(field.getName() + Label.class.getName(), label);
                this.fieldlinked.put(label, field);
                ++r;
@@ -221,7 +217,7 @@ public class FormGenerator extends SplitPane {
       }
 
       if (generetableview) {
-         TableFilter<?> datasTView = UtilityFormGenerator.createTableView(classe, fieldsToIgnore);
+         TableFilter<?> datasTView = UtilityFormGenerator.createTableView(classe);
          this.controls.put("TABLEVIEW_DATAS" + TableFilter.class.getName(), datasTView);
          if (generateform) {
             datasTView.getTableView().addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
@@ -248,26 +244,26 @@ public class FormGenerator extends SplitPane {
             });
          }
 
-         ascvsItem.setOnAction((e) -> {
-            List<?> dataset = null;
-            dataset = datasTView.getTableView().getSelectionModel().getSelectedItems();
-            FileChooser fc = new FileChooser();
-            fc.setInitialFileName(classe.getSimpleName());
-            fc.getExtensionFilters().add(new ExtensionFilter("csv", new String[]{"*.csv"}));
-            File f = fc.showSaveDialog((Window)null);
-            if (f != null) {
-               try {
-                  GCDUtility.asCSV(classe, dataset, f);
-                  UtilityFormGenerator.showalert("done", AlertType.INFORMATION, "", (ImageView)null);
-               } catch (IOException | SecurityException var7) {
-                  var7.printStackTrace();
-               }
-            }
-
-         });
+//         ascvsItem.setOnAction((e) -> {
+//            List<?> dataset = null;
+//            dataset = datasTView.getTableView().getSelectionModel().getSelectedItems();
+//            FileChooser fc = new FileChooser();
+//            fc.setInitialFileName(classe.getSimpleName());
+//            fc.getExtensionFilters().add(new ExtensionFilter("csv", new String[]{"*.csv"}));
+//            File f = fc.showSaveDialog((Window)null);
+//            if (f != null) {
+//               try {
+//                  GCDUtility.asCSV(classe, dataset, f);
+//                  UtilityFormGenerator.showalert("done", AlertType.INFORMATION, "", (ImageView)null);
+//               } catch (IOException | SecurityException var7) {
+//                  var7.printStackTrace();
+//               }
+//            }
+//
+//         });
          ContextMenu contextmenu = new ContextMenu();
          this.controls.put("CONTEXTMENU_DATAS" + ContextMenu.class.getName(), contextmenu);
-         contextmenu.getItems().addAll(new MenuItem[]{nextMI, prevMI, gotoMI, allMI, findMI, refreshMI, ascvsItem});
+         contextmenu.getItems().addAll(new MenuItem[]{nextMI, prevMI, gotoMI, allMI, findMI, refreshMI});
          datasTView.getTableView().setContextMenu(contextmenu);
          this.getItems().addAll(new Node[]{datasTView.getTableView()});
       }
@@ -282,7 +278,7 @@ public class FormGenerator extends SplitPane {
          Field field = var2[var4];
 
          try {
-            if ((this.fieldsToIgnore == null || !this.fieldsToIgnore.contains(field)) && field.getAnnotation(IgnoreField.class) == null) {
+            if (field.getAnnotation(IgnoreField.class) == null) {
                Class<?> fieldtype = field.getType();
                String settername = field.getName().substring(1);
                settername = "set" + field.getName().substring(0, 1).toUpperCase() + settername;
@@ -352,7 +348,7 @@ public class FormGenerator extends SplitPane {
          Field field = var2[var4];
 
          try {
-            if ((this.fieldsToIgnore == null || !this.fieldsToIgnore.contains(field)) && field.getAnnotation(IgnoreField.class) == null) {
+            if (field.getAnnotation(IgnoreField.class) == null) {
                Class<?> fieldtype = field.getType();
                String gettername = field.getName().substring(1);
                if (fieldtype == Boolean.TYPE) {

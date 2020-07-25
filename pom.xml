@@ -2,9 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>cd.gcd</groupId>
+	<groupId>cd.elcoge</groupId>
 	<artifactId>gcdformgenerator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 
 	<dependencies>
 
@@ -22,17 +22,12 @@
 			<groupId>org.controlsfx</groupId>
 			<artifactId>controlsfx</artifactId>
 			<version>8.40.10</version>
-		</dependency>
+		</dependency>		
 		<dependency>
-			<groupId>cd.gcd</groupId>
-			<artifactId>gcdutilitiesresources</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>local</groupId>
+			<artifactId>jfxrt</artifactId>
+			<version>1.8</version>
 		</dependency>
-		<dependency>
-    <groupId>local</groupId>
-    <artifactId>jfxrt</artifactId>
-    <version>1.8</version> 
-</dependency>
 
 	</dependencies>
 
@@ -46,8 +41,8 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>   
-</plugins>
+			</plugin>
+		</plugins>
 	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

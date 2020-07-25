@@ -1,0 +1,105 @@
+.context-menu {
+	-fx-background-color: #ffffff;
+}
+
+.scroll-pane, .scroll-pane>.viewport, .scroll-bar:horizontal,
+	.scroll-bar:vertical {
+	-fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal .thumb, .scroll-bar:vertical .thumb {
+	-fx-background-color: #6a6a6a;
+}
+
+.label {
+	-fx-text-fill: #000;
+	-fx-font-size: 1em;
+	-fx-font-weight: bold;	
+}
+
+.title {
+	-fx-text-fill: #000;
+	-fx-font-size: 2em;
+	-fx-font-weight: bold;
+}
+
+.button, .menu-button {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #0000ff;
+	-fx-border-style: solid;
+	-fx-border-width: 1px;
+	-fx-border-color: #d6d6d6;
+}
+
+.toggle-button {
+	-fx-background-color: #ff0000;
+}
+
+.toggle-button:selected {
+	-fx-background-color: #00ff00;
+}
+
+.menu-item:hover {
+	-fx-background-color: #d6d6d6;
+}
+
+.list-view, .tree-view, .text-area{
+	-fx-pref-width: 200;
+	-fx-pref-height: 70;
+}
+
+.table-view {
+	-fx-base: #ffffff;
+	-fx-control-inner-background: #ffffff;
+	-fx-table-header-border-color: transparent;
+	/*-fx-pref-width: 960;
+	 -fx-pref-height: 440; */
+}
+
+.table-view .column-header-background {
+	-fx-background-color: #035fff;
+}
+
+.table-view .column-header, .table-view .filler {
+	-fx-border-width: 0;
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+	-fx-alignment: center-left;
+	-fx-opacity: 1;
+}
+
+}
+.table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-background-color: #c0c0c0;
+}
+
+.split-pane:horizontal>.split-pane-divider {
+	-fx-border-color: transparent #1d1d1d transparent #1d1d1d;
+	-fx-background-color: transparent, derive(#1d1d1d, 20%);
+}
+
+.split-pane {
+	-fx-padding: 1 0 0 0;
+}
+
+}
+.combo-box, .text-field {
+	-fx-background-color: #ffffff;
+	-fx-pref-width: 200;
+	-fx-pref-height: 35;
+	-fx-border-color: #e5e5e5;
+	-fx-border-width: 1;
+}
+
+.combo-box:hover, .combo-box:focused, .text-field:hover, .text-field:focused,
+	.list-view:hover, .list-view:focused, .button:hover, .button:focused,
+	.menu-button:hover, .menu-button:focused {
+	-fx-border-color: #0080c0;
+}
+
+.combo-box:disabled, .combo-box:default:disabled {
+	-fx-background-color: #c0c0c0;
+}
